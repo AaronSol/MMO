@@ -1,4 +1,4 @@
- class mainScene extends Phaser.Scene {
+class mainScene extends Phaser.Scene {
     constructor(){
         super({key: "mainScene"});
     }
@@ -50,7 +50,13 @@
 
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.pingInterval = 0;
+        this.input.on('pointerdown', pointer => {
+            if(this.player) {
+                if(this.player.isActive) {
+                    this.player.setVelocity(0, -420);
+                }
+            }
+        });
     }
 
     update(dt) {
@@ -59,11 +65,8 @@
                 if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
                     this.player.setVelocity(0, -420);
                 }
-                if (this.pingInterval++ === 1) {
-                    //sent to app.js
-                    this.socket.emit("updateY", this.player.body.y + this.HALFHEIGHT);//add 20 bc its offset from center
-                    this.pingInterval = 0
-                }
+                //sent to app.js
+                this.socket.emit("updateY", Math.round(this.player.body.y + this.HALFHEIGHT));//add 20 bc its offset from center
             }
         }
 
@@ -88,21 +91,21 @@
 
     }
 
-     addOnePipe(x, y) {
-         // Create a pipe at the position x and y
-         let pipe = this.physics.add.sprite(x, y, 'pipe');
-         pipe.body.setAllowGravity(false);
-         // Add the pipe to our previously created group
-         this.pipes.add(pipe);
+    addOnePipe(x, y) {
+        // Create a pipe at the position x and y
+        let pipe = this.physics.add.sprite(x, y, 'pipe');
+        pipe.body.setAllowGravity(false);
+        // Add the pipe to our previously created group
+        this.pipes.add(pipe);
 
 
-         // Add velocity to the pipe to make it move left
-         pipe.body.velocity.x = -200;
+        // Add velocity to the pipe to make it move left
+        pipe.body.velocity.x = -200;
 
-         // Automatically kill the pipe when it's no longer visible
-         pipe.checkWorldBounds = true;
-         pipe.outOfBoundsKill = true;
-     }
+        // Automatically kill the pipe when it's no longer visible
+        pipe.checkWorldBounds = true;
+        pipe.outOfBoundsKill = true;
+    }
 
     createPipes(holePosition) {
         //create pipe row

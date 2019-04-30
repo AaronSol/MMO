@@ -47,6 +47,7 @@ function initializeSocketOnEvents(scene) {
         scene.otherPlayers.getChildren().forEach( player => {
             //If the playerWhoMoved's id matched the id of one of the otherPlayer's children
             if (playerWhoMoved.id === player.playerInfo.id) {
+                console.log(playerWhoMoved.y);
                 //Set that players info to the updated info
                 player.playerInfo = playerWhoMoved;
                 //Set that players position to correspond with the new y value - moving the player on the client side
@@ -88,7 +89,7 @@ function initializeSocketOnEvents(scene) {
         scene.countDownText.setText("GAME START IN " + countDownTime);
 
     });
-    
+
     scene.socket.on('receiveSelf', player => {
         // if the current player is active
 
@@ -111,10 +112,12 @@ function initializeSocketOnEvents(scene) {
             }
         };
 
-        scene.player.isActive = true;
+        scene.player.isActive = false;
 
         // Turn on wall collision checking for your sprite
         scene.player.setCollideWorldBounds(true);
+
+
 
         scene.player.body.onWorldBounds = true;
 
@@ -138,7 +141,7 @@ function initializeSocketOnEvents(scene) {
     });
 
     scene.socket.on('endGame', endInfo => {
-        if(endInfo.winner === undefined) { 
+        if(endInfo.winner === undefined) {
             scene.gameEndText.setText("THERE WAS A TIE, OOPS...");
         }
         else if(endInfo.winner.id === scene.socket.id) {

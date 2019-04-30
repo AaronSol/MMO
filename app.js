@@ -4,8 +4,6 @@ let server = require('http').Server(app);
 let io = require('socket.io').listen(server);
 let db = require('./db');
 
-db.con.connect();
-
 let gameState = require("./js/gameState");
 
 app.use(express.static(__dirname + '/public'));
@@ -77,6 +75,7 @@ let countDownTime = 5.0;
 
 
 function startPlayerCheckInterval() {
+    gameState.state.activePlayers = 0;
     playerCheckInterval = setInterval(() => {
         let playerNum = gameState.getPlayerCount();
 
@@ -95,7 +94,6 @@ function startPlayerCheckInterval() {
 
             setTimeout(() => {
                 clearInterval(countDownTimer);
-                console.log(gameState.getPlayerCount());
                 if(gameState.getPlayerCount() > 1){
                     startGame();
                 } else {
@@ -109,9 +107,9 @@ function startPlayerCheckInterval() {
 
 function startGame() {
 
-    gameState.state.activePlayers = 0;
     startTime = new Date();
     io.emit('startGame');
+    gameState.state.activePlayers = gameState.getPlayerCount();
     startPipeEmitInterval();
     startCheckForWinnerInterval();
 
@@ -137,7 +135,6 @@ function endGame(winnerid) {
     endTime = new Date();
     let totalGameTime = Math.floor((endTime - startTime) / 1000);//winner's score
 
-
     clearInterval(checkForWinnerInterval);
     clearInterval(pipeEmitInterval);
 
@@ -153,6 +150,7 @@ function endGame(winnerid) {
             }
         });
     }
+
     setTimeout(() => {
         startPlayerCheckInterval()
     }, 5500)
@@ -161,9 +159,9 @@ function endGame(winnerid) {
 }
 
 //SERVER INITIALIZATION
-
 db.getHighScoreObject(highScoreObject => {
     gameState.state.highScoreObject = highScoreObject;
+    console.log(highScoreObject);
 
     server.listen(8081, function () {
         console.log(gameState);
@@ -173,5 +171,4 @@ db.getHighScoreObject(highScoreObject => {
     //Begin checking if enough players are in server to start
     startPlayerCheckInterval();
 });
-
 
