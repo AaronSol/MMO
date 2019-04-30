@@ -3,6 +3,7 @@ let gameState = {
         players: {}, //key = socket id of player, value = {name: "guest", isActive: false, y:300, id: id}
         countDownIsActive: false,
         gameIsActive: false,
+        countDownTime: 5.0,
         activePlayers: 0,
         highScoreObject: {name: "example", score: -1}
         //TODO: power-ups??
