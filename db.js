@@ -1,34 +1,26 @@
-let mysql = require('mysql');
+const sqlite3 = require('sqlite3').verbose();
 
-
-let con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: process.env.MysqlPass,
-    database: "flappydb"
-});
-
-
+//db.run("CREATE TABLE IF NOT EXISTS highscore (name VARCHAR, score INT, id INT);");
 
 let updateHighScore = (name, score) => {
-
-    let sql = mysql.format("UPDATE highscore SET name = ?, score = ? WHERE id = 0", [name, score]);
-    con.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result.affectedRows + " record(s) updated");
+    let db = new sqlite3.Database('./highscore.db');
+    db.run("UPDATE highscore SET name = ?, score = ? WHERE id = 0", [name, score], err => {
+        if(err) throw err;
     });
+    db.close();
 };
 
 let getHighScoreObject = callback => {
-
+    let db = new sqlite3.Database('./highscore.db');
     let sql = "SELECT * FROM highscore WHERE id = 0";
-    con.query(sql, (err, result) => {
+    db.get(sql, (err, row) => {
         if (err) throw err;
-        callback({name: result[0].name, score: result[0].score});
+        console.log(row);
+        callback({name: row.name, score: row.score});
     });
-
+    db.close();
 };
 
-module.exports.con = con;
 module.exports.updateHighScore = updateHighScore;
 module.exports.getHighScoreObject = getHighScoreObject;
+

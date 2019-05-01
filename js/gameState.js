@@ -3,6 +3,7 @@ let gameState = {
         players: {}, //key = socket id of player, value = {name: "guest", isActive: false, y:300, id: id}
         countDownIsActive: false,
         gameIsActive: false,
+        countDownTime: 5.0,
         activePlayers: 0,
         highScoreObject: {name: "example", score: -1}
         //TODO: power-ups??
@@ -36,9 +37,7 @@ let gameState = {
     updateIsActive: function(id, isActive) {
         let player = this.state.players[id];
         player.isActive = isActive;
-        if(isActive){
-            this.state.activePlayers += 1;
-        } else {
+        if(!isActive){
             this.state.activePlayers -= 1;
         }
     },
@@ -52,7 +51,7 @@ let gameState = {
     },
 
     findWinner: function() {
-        const players = Object.values(this.state.players);//Get all players
+        const players = Object.keys(this.state.players).map(id => this.state.players[id]);//Get all players
         let activePlayers = 0;
         let winnerId = "";
 
