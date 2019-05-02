@@ -5,9 +5,9 @@
         width: 0 !important;
         height: 0 !important;
         border: 1px black solid !important;
-        -ms-transform: scale(.6,.58); /* IE 9 */
-        -webkit-transform: scale(.6,.58); /* Safari */
-        transform: scale(.6,.58); /* Standard syntax */;
+        -ms-transform: scale(.5,.5); /* IE 9 */
+        -webkit-transform: scale(.5,.5); /* Safari */
+        transform: scale(.5,.5); /* Standard syntax */;
         overflow: visible !important;
     }
 }
