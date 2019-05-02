@@ -1,0 +1,20 @@
+
+@media (max-width : 900px) {
+    #game-container {
+        margin: 0 !important;
+        width: auto !important;
+        border: none !important;
+        -ms-transform: scale(.5,.5); /* IE 9 */
+        -webkit-transform: scale(.5,.5); /* Safari */
+        transform: scale(.5,.5); /* Standard syntax */;
+        overflow: visible !important;
+    }
+}
+
+@media (max-width : 10000px) {
+    #game-container {
+        margin: 0 auto;
+        width: 900px;
+        border: 2px black solid;
+    }
+}
