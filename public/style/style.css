@@ -4,9 +4,9 @@
         margin: 0 !important;
         width: auto !important;
         border: none !important;
-        -ms-transform: scale(.5,.5); /* IE 9 */
-        -webkit-transform: scale(.5,.5); /* Safari */
-        transform: scale(.5,.5); /* Standard syntax */;
+        -ms-transform: scale(.75,.75); /* IE 9 */
+        -webkit-transform: scale(.75,.75); /* Safari */
+        transform: scale(.75,.75); /* Standard syntax */;
         overflow: visible !important;
     }
 }
