@@ -9,6 +9,7 @@ class mainScene extends Phaser.Scene {
     preload(){
         this.load.image('player', 'assets/player.png'); //load player.png as 'player'
         this.load.image('pipe', 'assets/pipe.png'); //load pipe.png as 'pipe'
+        this.serverURL = 'http://localhost:8080';
 
     }
 
@@ -18,7 +19,7 @@ class mainScene extends Phaser.Scene {
     create() {
 
         //establish socket connection with server
-        this.socket = io();
+        this.socket = io(this.serverURL, {reconnection: false});
 
         //initialize a group to later be used to store every player EXCEPT the one currently playing
         this.otherPlayers = this.add.group();
@@ -44,6 +45,12 @@ class mainScene extends Phaser.Scene {
         this.highScoreAlertText = this.add.text(10, 10, "", { font: "32px Arial", fill: "#ffffff", stroke: '#000000', strokeThickness: 6});
         this.highScoreAlertText.alpha = 0.0;
         this.highScoreAlertText.setDepth(5);
+
+        this.disconnectedText = this.add.text(225,400, "You were disconnected from the server, please refresh page.", { font: "bold 20px Arial", fill: "#ff0000", boundsAlignH: "center", boundsAlignV: "middle", stroke: '#000000', strokeThickness: 6});
+        this.disconnectedText.alpha = 0.0;
+        this.disconnectedText.setDepth(6);
+
+
 
 
         initializeSocketOnEvents(this);

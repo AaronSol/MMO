@@ -43,7 +43,6 @@ function startSocketOnFunctions(gameState, io) {
         socket.on('getHighScoreObject', () => {
             io.to(socket.id).emit('receiveHighScoreObject', gameState.state.highScoreObject)
         });
-
     });
 }
 

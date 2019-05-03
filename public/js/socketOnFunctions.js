@@ -161,4 +161,10 @@ function initializeSocketOnEvents(scene) {
         scene.gameEndText.alpha = 0.0;
     });
 
+    //CHECK IF NO LONGER CONNECTED
+    setInterval(() => {
+        if(!scene.socket.connected) {
+            scene.disconnectedText.alpha = 1;
+        }
+    })
 }
